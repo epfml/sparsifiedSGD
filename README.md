@@ -1,6 +1,6 @@
 # Sparsified SGD with Memory
 
-Code for the experimental part of the paper [Sparsified SGD with Memory TODO link](). It contains the code the following experiments:
+Code for the experimental part of the paper [Sparsified SGD with Memory TODO link](). It contains the code for the following experiments:
 
 - Theoretical convergence with different sparsification operator
 - Comparison with QSGD
