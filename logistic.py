@@ -44,6 +44,8 @@ class LogisticSGD(BaseLogistic):
         compute_loss_every = int(X.shape[0] / LOSS_PER_EPOCH)
         all_losses = np.zeros(LOSS_PER_EPOCH * p.num_epoch + 1)
 
+        started = time.time()
+
         for epoch in np.arange(p.num_epoch):
             np.random.shuffle(shuffled_indices)
 
@@ -51,7 +53,7 @@ class LogisticSGD(BaseLogistic):
                 t = epoch * num_samples + iteration
                 if t % compute_loss_every == 0:
                     loss = self.loss(X, y)
-                    print('{} t {} epoch {} iter {} loss {}'.format(p, t, epoch, iteration, loss))
+                    print('{} t {} epoch {} iter {} loss {} elapsed {}s'.format(p, t, epoch, iteration, loss, time.time() - started))
                     all_losses[t // compute_loss_every] = loss
 
                 sample_idx = shuffled_indices[iteration]
