@@ -26,7 +26,7 @@ class BaseLogistic:
         p = self.params
         loss = np.sum(np.log(1 + np.exp(-y * (X @ w)))) / X.shape[0]
         if p.regularizer:
-            loss += p.regularizer * np.square(w).sum()
+            loss += p.regularizer * np.square(w).sum() / 2
         return loss
 
     def predict(self, X):
@@ -48,6 +48,7 @@ class BaseLogistic:
         return acc
 
     def update_estimate(self, t):
+        t = int(t)  # to avoid overflow with np.int32
         p = self.params
         if p.estimate == 'final':
             self.w_estimate = self.w

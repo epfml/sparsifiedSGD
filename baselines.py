@@ -22,7 +22,7 @@ baselines = {}
 
 def loss(clf, X, y, reg):
     baseline_loss = np.sum(np.log(1 + np.exp(-y * (X @ clf.coef_.transpose()).squeeze()))) / X.shape[0]
-    baseline_loss += reg * np.sum(np.square(clf.coef_))
+    baseline_loss += reg / 2 * np.sum(np.square(clf.coef_))
     return baseline_loss
 
 

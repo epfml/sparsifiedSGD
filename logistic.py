@@ -64,12 +64,12 @@ class LogisticSGD(BaseLogistic):
                 # pred_proba = sigmoid(pred_logits)
                 x = X[sample_idx]
 
+                # should be sparsity agnostic
+                minus_grad = y[sample_idx] * x * sigmoid(-y[sample_idx] * x.dot(self.w).squeeze())
                 if isspmatrix(x):
-                    x = np.array(x.todense()).squeeze(0)
-                minus_grad = y[sample_idx] * x * sigmoid(-y[sample_idx] * np.dot(x, self.w))
-                # minus_grad = - x * (pred_proba - y[sample_idx])
+                    minus_grad = minus_grad.toarray().squeeze(0)
                 if p.regularizer:
-                    minus_grad -= 2 * p.regularizer * self.w
+                    minus_grad -= p.regularizer * self.w
 
                 lr_minus_grad = memory(lr * minus_grad)
                 self.w += lr_minus_grad
