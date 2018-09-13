@@ -10,12 +10,16 @@ from utils import pickle_it
 """Arguments"""
 
 parser = argparse.ArgumentParser()
-parser.add_argument('directory', type=str)
+parser.add_argument('data', type=str)
+parser.add_argument('output', type=str)
+
+EPSILON_NAME = "epsilon.pickle"
+RCV1_NAME = "rcv1.pickle"
 
 args = parser.parse_args()
-if not os.path.exists(args.directory):
-    print('create {}'.format(args.directory))
-    os.makedirs(args.directory)
+if not os.path.exists(args.output):
+    print('create {}'.format(args.output))
+    os.makedirs(args.output)
 
 baselines = {}
 
@@ -28,7 +32,7 @@ def loss(clf, X, y, reg):
 
 """ RCV1 test"""
 print('RCV1-test')
-with open(os.path.expanduser('/mlodata1/jb/data/rcv1-test-1.pickle'), 'rb') as f:
+with open(os.path.join(args.data, RCV1_NAME), 'rb') as f:
     X, y = pickle.load(f)
 
 reg = 1 / X.shape[0]
@@ -42,7 +46,7 @@ baselines['RCV1-test'] = l
 """ EPSILON """
 
 print('epsilon')
-with open(os.path.expanduser('/mlodata1/jb/data/epsilon_normalized_1.pickle'), 'rb') as f:
+with open(os.path.join(args.data, EPSILON_NAME), 'rb') as f:
     X, y = pickle.load(f)
 
 reg = 1 / X.shape[0]
@@ -55,4 +59,4 @@ baselines['epsilon'] = l
 
 """ Pickle """
 print('baselines', baselines)
-pickle_it(baselines, 'baselines', args.directory)
+pickle_it(baselines, 'baselines', args.output)

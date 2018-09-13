@@ -20,7 +20,7 @@ class Parameters:
                  qsgd_s=None):
         # a lot of sanity checks to fail fast if we have inconsistent parameters
         assert num_epoch >= 0
-        assert lr_type in ['constant', 'epoch-decay', 'decay']
+        assert lr_type in ['constant', 'epoch-decay', 'decay', 'bottou']
 
         if lr_type in ['constant', 'decay']:
             assert initial_lr > 0
@@ -76,6 +76,8 @@ class Parameters:
             lr_str = "lr{}decay{}".format(self.initial_lr, self.epoch_decay_lr)
         elif self.lr_type == 'custom':
             lr_str = "lr{}/lambda*(t+{})".format(self.initial_lr, self.tau)
+        elif self.lr_type == 'bottou':
+            lr_str = "lr-bottou-{}".format(self.initial_lr)
         else:
             lr_str = "lr-{}".format(self.lr_type)
 

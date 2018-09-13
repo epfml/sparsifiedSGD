@@ -25,15 +25,30 @@ We decompress the libsvm file and use pickle format instead. It takes more space
 
 ```python
 import pickle
+import os
 from sklearn.datasets import load_svmlight_file
-X, y = load_svmlight_file('rcv1_test.binary.bz2')
-with open('rcv1_test.pickle', 'wb') as f:
+
+if not os.path.exists('data'):
+    os.makedirs('data')
+
+X, y = load_svmlight_file('data/rcv1_test.binary.bz2')
+with open('rcv1.pickle', 'wb') as f:
+    pickle.dump((X, y), f)
+   
+X, y = load_svmlight_file('data/epsilon_normalized.bz2')
+with open('epsilon.pickle', 'wb') as f:
     pickle.dump((X, y), f)
 ```
 
-After updating the path to the data files in `experiment.py` , you can then run our experiments, for example
+After updating the path to the data files in `experiment.py` , you can run the baseline
 
 ```bash
-python3 experiment.py rcv1-th results/rcv1-th --nproc 10
+python3 baselines.py ./data results/baselines
+```
+
+and then run our experiments, for example
+
+```bash
+python3 experiment.py rcv1-th ./data results/rcv1-th --nproc 10
 ```
 

@@ -19,6 +19,8 @@ class BaseLogistic:
             return p.initial_lr * (p.epoch_decay_lr ** epoch)
         if p.lr_type == 'decay':
             return p.initial_lr / (p.regularizer * (t + p.tau))
+        if p.lr_type == 'bottou':
+            return p.initial_lr / (1 + p.initial_lr * p.regularizer * t)
 
     def loss(self, X, y):
         w = self.w_estimate if self.w_estimate is not None else self.w

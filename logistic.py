@@ -60,11 +60,8 @@ class LogisticSGD(BaseLogistic):
 
                 lr = self.lr(epoch, iteration, num_samples, num_features)
 
-                # pred_logits = X[sample_idx] @ self.w
-                # pred_proba = sigmoid(pred_logits)
                 x = X[sample_idx]
 
-                # should be sparsity agnostic
                 minus_grad = y[sample_idx] * x * sigmoid(-y[sample_idx] * x.dot(self.w).squeeze())
                 if isspmatrix(x):
                     minus_grad = minus_grad.toarray().squeeze(0)
