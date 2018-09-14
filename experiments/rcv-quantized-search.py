@@ -2,6 +2,8 @@ import argparse
 import multiprocessing as mp
 import os
 import pickle
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 import matplotlib.pyplot as plt
 import numpy as np

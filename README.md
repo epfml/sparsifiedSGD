@@ -40,15 +40,15 @@ with open('epsilon.pickle', 'wb') as f:
     pickle.dump((X, y), f)
 ```
 
-After updating the path to the data files in `experiment.py` , you can run the baseline
+You can run the baseline
 
 ```bash
-python3 baselines.py ./data results/baselines
+python3 experiments/baselines.py ./data results/baselines
 ```
 
 and then run our experiments, for example
 
 ```bash
-python3 experiment.py rcv1-th ./data results/rcv1-th --nproc 10
+python3 experiments/rcv1-th.py ./data results/rcv1-th
 ```
 

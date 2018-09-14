@@ -2,8 +2,11 @@ import argparse
 import multiprocessing as mp
 import os
 import pickle
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 from logistic import LogisticSGD
 from parameters import Parameters
@@ -18,14 +21,13 @@ args = parser.parse_args()
 
 DATA_DIR = args.data_dir
 RESULT_DIR = args.result_dir
-DATASET = 'epsilon.pickle'
+DATASET = 'rcv1.pickle'
 NUM_EPOCH = 10
 
 print('load dataset')
 dataset = os.path.join(DATA_DIR, DATASET)
 with open(dataset, 'rb') as f:
     X, y = pickle.load(f)
-
 n, d = X.shape
 
 params = []
@@ -35,16 +37,19 @@ params.append(Parameters(name="full-sgd", num_epoch=NUM_EPOCH, lr_type='bottou',
 params.append(Parameters(name="top1", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=10.,
                          regularizer=1 / n, estimate='mean',
                          take_k=1, take_top=True, with_memory=True))
-params.append(Parameters(name="rand1", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=10.,
+params.append(Parameters(name="rand1", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=1.,
                          regularizer=1 / n, estimate='mean',
                          take_k=1, take_top=False, with_memory=True))
+params.append(Parameters(name="rand10", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=1.,
+                         regularizer=1 / n, estimate='mean',
+                         take_k=10, take_top=False, with_memory=True))
 params.append(Parameters(name="qsgd-8bit", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=10.,
                          regularizer=1 / n, estimate='mean',
                          qsgd_s=2 ** 8))
-params.append(Parameters(name="qsgd-4bit", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=1.,
+params.append(Parameters(name="qsgd-4bit", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=10.,
                          regularizer=1 / n, estimate='mean',
                          qsgd_s=2 ** 4))
-params.append(Parameters(name="qsgd-2bit", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=1.,
+params.append(Parameters(name="qsgd-2bit", num_epoch=NUM_EPOCH, lr_type='bottou', initial_lr=10.,
                          regularizer=1 / n, estimate='mean',
                          qsgd_s=2 ** 2))
 
@@ -68,7 +73,7 @@ pickle_it(results, 'results', RESULT_DIR)
 print('results saved in "{}"'.format(RESULT_DIR))
 
 # process data
-
+#
 # res_and_infos = []
 # names = []
 # lrs = []
@@ -92,7 +97,7 @@ print('results saved in "{}"'.format(RESULT_DIR))
 #
 # for name, ax in zip(names, axarr):
 #     ax.set_title(name)
-#     ax.set_ylim(top=2.)
+#     ax.set_ylim(0., 2.)
 #
 # axarr[0].set_ylabel('loss')
 # axarr[0].legend();
