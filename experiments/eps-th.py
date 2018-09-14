@@ -77,36 +77,3 @@ with mp.Pool(len(params)) as pool:
 
 pickle_it(results, 'results', RESULT_DIR)
 print('results saved in "{}"'.format(RESULT_DIR))
-
-# process data
-
-# res_and_infos = []
-# names = []
-# lrs = []
-# for p, res in zip(params, results):
-#     lr = p.initial_lr
-#     name = str(p)[:-(len(str(lr)) + 1)]
-#     names.append(name)
-#     lrs.append(lr)
-#     res_and_infos.append((name, lr, res[1][:-1]))
-#
-# names = sorted(list(set(names)))
-# lrs = sorted(list(set(lrs)))
-#
-# # plot
-# f, axarr = plt.subplots(1, len(names), figsize=(20, 4), sharey=True)
-#
-# for name, lr, loss in res_and_infos:
-#     ax = axarr[names.index(name)]
-#     idx = lrs.index(lr)
-#     ax.plot(loss, "C{}".format(idx), label=str(lr))
-#
-# for name, ax in zip(names, axarr):
-#     ax.set_title(name)
-#     ax.set_ylim(top=2.)
-#
-# axarr[0].set_ylabel('loss')
-# axarr[0].legend();
-# result_pdf = os.path.join(RESULT_DIR, 'figure.pdf')
-# f.savefig(result_pdf)
-# print('figure saved in {}'.format(result_pdf))
