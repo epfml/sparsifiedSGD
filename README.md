@@ -1,6 +1,6 @@
 # Sparsified SGD with Memory
 
-Code for the experimental part of the paper [Sparsified SGD with Memory TODO link](). It contains the code for the following experiments:
+Code for the experimental part of the paper [Sparsified SGD with Memory](https://arxiv.org/abs/1809.07599). It contains the code for the following experiments:
 
 - Theoretical convergence with different sparsification operator
 - Comparison with QSGD
@@ -51,4 +51,14 @@ and then run our experiments, for example
 ```bash
 python3 experiments/rcv1-th.py ./data results/rcv1-th
 ```
+
+# Reference
+If you use this code, please cite the following [paper](https://arxiv.org/abs/1809.07599)
+
+    @inproceedings{scj2018sparseSGD,
+       author = {Sebastian U. Stich, Jean-Baptiste Cordonnier and Martin Jaggi},
+       title = "{Sparsified SGD with Memory}",
+       booktitle = {NIPS 2018 - Advances in Neural Information Processing Systems},
+       year = 2018,
+    }
 
