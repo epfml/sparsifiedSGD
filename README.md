@@ -56,9 +56,10 @@ python3 experiments/rcv1-th.py ./data results/rcv1-th
 If you use this code, please cite the following [paper](https://arxiv.org/abs/1809.07599)
 
     @inproceedings{scj2018sparseSGD,
-       author = {Sebastian U. Stich, Jean-Baptiste Cordonnier and Martin Jaggi},
-       title = "{Sparsified SGD with Memory}",
-       booktitle = {NIPS 2018 - Advances in Neural Information Processing Systems},
-       year = 2018,
+      author = {Sebastian U. Stich and Jean-Baptiste Cordonnier and Martin Jaggi},
+      title = "{Sparsified {SGD} with Memory}",
+      booktitle = {NIPS 2018 - Advances in Neural Information Processing Systems},
+      year = 2018,
+      url = {https://arxiv.org/abs/1809.07599}
     }
 
