@@ -18,7 +18,7 @@ class GradientMemory:
         self.qsgd_s = qsgd_s
         self.m = None
 
-    def __call__(self, g, sparse=False, no_apply=False):
+    def __call__(self, g, sparse=False): # , no_apply=False):
         if self.qsgd_s:
             return qsgd.quantize(g, self.qsgd_s)
 
@@ -34,8 +34,8 @@ class GradientMemory:
             self.m = g
 
         # for k < 1 sometimes no gradient is used from the memory
-        if no_apply:
-            return None
+        # if no_apply:
+        #     return None
 
         d = np.prod(self.m.shape)
         k = min(self.take_k, d)
