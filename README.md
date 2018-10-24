@@ -10,6 +10,16 @@ Use `notebooks/plots.ipynb` to visualize the results.
 
 Please open an issue if you have questions or problems.
 
+### Environment set up
+
+Install [Anaconda](https://anaconda.org) and create the `sparsifedSGD` environment
+```bash
+conda env create -f environment.yaml
+source activate sparsifedSGD
+...
+source deactivate # at the end
+```
+
 ### Reproduce the results
 
 To reproduce the results, you can download the datasets from [LibSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html)
@@ -34,7 +44,7 @@ if not os.path.exists('data'):
 X, y = load_svmlight_file('data/rcv1_test.binary.bz2')
 with open('rcv1.pickle', 'wb') as f:
     pickle.dump((X, y), f)
-   
+
 X, y = load_svmlight_file('data/epsilon_normalized.bz2')
 with open('epsilon.pickle', 'wb') as f:
     pickle.dump((X, y), f)
@@ -43,13 +53,13 @@ with open('epsilon.pickle', 'wb') as f:
 You can run the baseline
 
 ```bash
-python3 experiments/baselines.py ./data results/baselines
+python experiments/baselines.py ./data results/baselines
 ```
 
 and then run our experiments, for example
 
 ```bash
-python3 experiments/rcv1-th.py ./data results/rcv1-th
+python experiments/rcv1-th.py ./data results/rcv1-th
 ```
 
 # Reference
