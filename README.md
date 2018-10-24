@@ -56,11 +56,14 @@ You can run the baseline
 python experiments/baselines.py ./data results/baselines
 ```
 
-and then run our experiments, for example
+Run our experiments, for example
 
 ```bash
-python experiments/rcv1-th.py ./data results/rcv1-th
+python experiments/rcv-th.py ./data results/rcv-th
+python experiments/rcv-par.sh ./data results/rcv-par
 ```
+
+And visualize the results with the notebooks.
 
 # Reference
 If you use this code, please cite the following [paper](https://arxiv.org/abs/1809.07599)
@@ -72,4 +75,3 @@ If you use this code, please cite the following [paper](https://arxiv.org/abs/18
       year = 2018,
       url = {https://arxiv.org/abs/1809.07599}
     }
-
