@@ -82,7 +82,7 @@ class LogisticParallelSGD(BaseLogistic):
 
                     sparse = params_w.take_k and (params_w.take_k < num_features)
                     # next_real -= 1
-                    lr_minus_grad = memory(lr * minus_grad, sparse=sparse) #, no_apply=(next_real != 0))
+                    lr_minus_grad = memory(lr * minus_grad, sparse=sparse)  # , no_apply=(next_real != 0))
                     # if next_real == 0:
                     #     next_real = params_w.real_update_every
 
@@ -136,7 +136,8 @@ class LogisticParallelSGD(BaseLogistic):
 
             processes = [mp.Process(target=worker_fit,
                                     args=(
-                                    i, p.n_cores, X_w, y_w, weights_w, X.shape, indices, results, self.params, stopper))
+                                        i, p.n_cores, X_w, y_w, weights_w, X.shape, indices, results, self.params,
+                                        stopper))
                          for i in range(p.n_cores)]
 
             for p in processes:
@@ -154,6 +155,7 @@ class LogisticParallelSGD(BaseLogistic):
             self.w = np.random.normal(0, INIT_WEIGHT_STD, size=(num_features,))
 
         def worker_fit(id_w, num_workers, X_w, y_w, weights_w, shape, indices, counter, start_barrier, params_w):
+            assert params_w.regularizer is not None
             # reconstruct numpy shared array
             num_samples, num_features = shape
             weights_w = ctypeslib.as_array(weights_w)
@@ -169,7 +171,6 @@ class LogisticParallelSGD(BaseLogistic):
                                     with_memory=params_w.with_memory)
 
             start_barrier.wait()
-
             while True:
                 with counter.get_lock():
                     idx = counter.value
@@ -186,11 +187,13 @@ class LogisticParallelSGD(BaseLogistic):
                 x = X_w[sample_idx]
 
                 if isspmatrix(x):
-                    x = np.array(x.todense()).squeeze(0)
-                minus_grad = y[sample_idx] * x * sigmoid(-y[sample_idx] * np.dot(x, self.w))
+                    minus_grad = -1. * params_w.regularizer * weights_w
+                    sparse_minus_grad = y[sample_idx] * x * sigmoid(-y[sample_idx] * x.dot(weights_w).squeeze(0))
+                    minus_grad[sparse_minus_grad.indices] += sparse_minus_grad.data
 
-                if params_w.regularizer:
-                    minus_grad -= params_w.regularizer * weights_w  # TODO check here I removed a 2...
+                else:
+                    minus_grad = y[sample_idx] * x * sigmoid(-y[sample_idx] * x.dot(weights_w))
+                    minus_grad -= params_w.regularizer * weights_w
 
                 sparse = params_w.take_k and (params_w.take_k < num_features)
                 lr_minus_grad = memory(lr * minus_grad, sparse=sparse)
@@ -223,7 +226,8 @@ class LogisticParallelSGD(BaseLogistic):
 
             processes = [mp.Process(target=worker_fit,
                                     args=(
-                                    i, p.n_cores, X_w, y_w, weights_w, X.shape, indices, counter, start_barrier, self.params))
+                                        i, p.n_cores, X_w, y_w, weights_w, X.shape, indices, counter, start_barrier,
+                                        self.params))
                          for i in range(p.n_cores)]
 
             for p in processes:
@@ -237,6 +241,7 @@ class LogisticParallelSGD(BaseLogistic):
             stop = manager.Value('b', False)
             w_queue = mp.Queue()
             results = manager.dict()
+
             def loss_computer(q, regularizer, res, stop):  # should be stoppable
                 print('start loss computer')
                 losses = []
