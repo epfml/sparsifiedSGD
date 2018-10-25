@@ -20,6 +20,14 @@ source activate sparsifedSGD
 source deactivate # at the end
 ```
 
+For LaTeX support in plots
+
+```
+sudo apt-get install texlive-full msttcorefonts
+```
+
+
+
 ### Reproduce the results
 
 To reproduce the results, you can download the datasets from [LibSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html)
